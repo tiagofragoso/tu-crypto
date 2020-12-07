@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[cm]{fullpage}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\renewcommand{\thesection}{Exercise \Alph{section}:}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This part needs customization from you %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% please enter your group number your names and matriculation numbers here
+%TODO
+\newcommand{\groupnumber}{Our group number}
+\newcommand{\name}{Our names}
+\newcommand{\matriculation}{Our matriculations, same order as the names}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           End of customization         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\projnumber}{1}
+\newcommand{\Title}{Analysing the Blockchain}
+\setlength{\headheight}{15.2pt}
+\setlength{\headsep}{20pt}
+\setlength{\textheight}{680pt}
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyhead[L]{Cryptocurrencies - Project \projnumber\ - Analysing the Blockchain}
+\fancyhead[C]{}
+\fancyhead[R]{\name}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[C]{\thepage}
+
+
+\begin{document}
+\thispagestyle{empty}
+\noindent\framebox[\linewidth]{%
+ \begin{minipage}{\linewidth}%
+ \hspace*{5pt} \textbf{Cryptocurrencies (WS2020/21)} \hfill Prof.~Matteo Maffei \hspace*{5pt}\\
+
+ \begin{center}
+  {\bf\Large Project \projnumber~-- \Title}
+ \end{center}
+
+ \vspace*{5pt}\hspace*{5pt} \hfill TU Wien \hspace*{5pt}
+\end{minipage}%
+}
+\vspace{0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Group \groupnumber}
+Our group consists of the following members:
+\begin{center}
+\textbf{\name} %please fill the information above
+
+\matriculation %please fill the information above
+\end{center}
+
+\section{Finding invalid blocks}
+% Fill here your answers for exercise A 
+
+\section{UTXOs}
+% Fill here your answers for exercise B
+
+\section{De-anonymization}
+% Fill here your answers for exercise C
+
+\section*{Work distribution}
+%Fill in here an overview on which group member participated in which task and to which extent
+
+\end{document}
+
