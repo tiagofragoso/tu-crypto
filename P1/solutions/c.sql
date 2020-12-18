@@ -10,7 +10,7 @@ DELETE FROM addressrelations;
 insert into addressrelations (addr1, addr2) SELECT I1.sig_id, I2.sig_id
 FROM inputs as I1, inputs as I2  
 WHERE I1.tx_id = I2.tx_id 
-AND I1.input_id != I2.input_id;
+AND I1.sig_id != I2.sig_id;
 
 /*heuristic 2*/
 
@@ -51,5 +51,59 @@ JOIN out_addresses USING (tx_id);
 CREATE TABLE IF NOT EXISTS clusters(id int, address int); 
 
 INSERT INTO clusters (id, address) SELECT *  FROM clusterAddresses();
+
+CREATE EXTENSION if not exists pgcrypto;
+
+/*for debugging*/
+/*SELECT c.id, sum(o.value)
+  FROM outputs AS o, clusters as c, utxos as u
+  WHERE o.pk_id = c.address
+  AND o.output_id = u.output_id
+  GROUP BY c.id
+  ORDER BY sum(o.value) DESC;
+*/
+
+DELETE FROM max_cluster_id;
+DELETE FROM max_value_by_entity;
+DELETE FROM min_addr_of_max_entity;
+DELETE FROM max_tx_to_max_entity;
+
+DO $$
+DECLARE max_cluster_id integer; 
+BEGIN
+  
+	SELECT c.id INTO max_cluster_id
+	FROM outputs AS o, clusters as c, utxos as u
+	WHERE o.pk_id = c.address
+	AND o.output_id = u.output_id
+	GROUP BY c.id
+	ORDER BY sum(o.value) DESC
+	LIMIT 1;
+  
+	INSERT INTO max_value_by_entity SELECT sum(o.value) as unspent_total
+	FROM outputs AS o, clusters as c
+	WHERE o.pk_id = max_cluster_id
+	GROUP BY c.id
+	ORDER BY unspent_total DESC
+	LIMIT 1;
+	
+	INSERT INTO min_addr_of_max_entity SELECT c.address
+	FROM clusters as c
+	WHERE c.id = max_cluster_id
+	ORDER BY c.address ASC
+	LIMIT 1;
+	
+	INSERT INTO max_tx_to_max_entity SELECT tx_id/*, o.value*/
+	FROM outputs o, clusters c 
+	WHERE c.id = max_cluster_id
+	AND c.address = o.pk_id
+	ORDER BY o.value desc
+	LIMIT 1;
+
+  
+END $$;
+
+
+
 
 
