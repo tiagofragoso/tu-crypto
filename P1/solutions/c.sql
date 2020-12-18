@@ -61,6 +61,8 @@ CREATE EXTENSION if not exists pgcrypto;
   AND o.output_id = u.output_id
   GROUP BY c.id
   ORDER BY sum(o.value) DESC;
+
+ 8678
 */
 
 DELETE FROM max_cluster_id;
@@ -79,26 +81,24 @@ BEGIN
 	GROUP BY c.id
 	ORDER BY sum(o.value) DESC
 	LIMIT 1;
-  
-	INSERT INTO max_value_by_entity SELECT sum(o.value) as unspent_total
-	FROM outputs AS o, clusters as c
-	WHERE o.pk_id = max_cluster_id
-	GROUP BY c.id
-	ORDER BY unspent_total DESC
-	LIMIT 1;
 	
-	INSERT INTO min_addr_of_max_entity SELECT c.address
+	INSERT INTO max_value_by_entity SELECT sum(o.value) as unspent_total
+    	FROM utxos AS u, outputs as o
+    	WHERE u.output_id = o.pk_id AND o.pk_id IN 
+    		(SELECT address
+        	FROM clusters
+                WHERE id = max_cluster_id);
+
+
+	INSERT INTO min_addr_of_max_entity SELECT min(c.address)
 	FROM clusters as c
-	WHERE c.id = max_cluster_id
-	ORDER BY c.address ASC
-	LIMIT 1;
+	WHERE c.id = max_cluster_id;
+	
 	
 	INSERT INTO max_tx_to_max_entity SELECT tx_id/*, o.value*/
 	FROM outputs o, clusters c 
 	WHERE c.id = max_cluster_id
-	AND c.address = o.pk_id
-	ORDER BY o.value desc
-	LIMIT 1;
+	AND c.address = o.pk_id;
 
   
 END $$;
