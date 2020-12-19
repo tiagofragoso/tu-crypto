@@ -164,9 +164,10 @@ WHERE input_sums.sum < output_sums.sum;
 
 WITH coinbase_values AS (
     -- Get coinbase value for each block
-    SELECT block_id, value AS coinbase_value
+    SELECT block_id, SUM(value) AS coinbase_value
     FROM coinbase_transactions
     JOIN outputs USING (tx_id)
+    GROUP BY block_id
 ),
  input_values AS (
     -- Get sum(inputs) for each block
