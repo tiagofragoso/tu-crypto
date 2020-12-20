@@ -1,9 +1,4 @@
-/* IMPORTANT! use psql -qAtX -F " " for getting raw output without headers/footers/vertical bars */
-
-/* empty addressrelations table */
-DELETE FROM addressrelations;
-
-/* heuristic 1*/
+-- DELETE FROM addressrelations;
 
 -- Joint control
 
@@ -12,8 +7,6 @@ SELECT I1.sig_id, I2.sig_id
 FROM inputs AS I1, inputs AS I2
 WHERE I1.tx_id = I2.tx_id
 AND I1.sig_id != I2.sig_id;
-
-/*heuristic 2*/
 
 -- Serial control
 
@@ -49,26 +42,14 @@ INSERT INTO clusters SELECT * FROM clusteraddresses();
 -- SELECT encode(sha256(string_agg(id::text, ' ' ORDER BY id)::bytea), 'hex') AS hash
 -- FROM clusters;
 
-/*for debugging*/
-/*SELECT c.id, sum(o.value)
-  FROM outputs AS o, clusters as c, utxos as u
-  WHERE o.pk_id = c.address
-  AND o.output_id = u.output_id
-  GROUP BY c.id
-  ORDER BY sum(o.value) DESC;
-
- 8678
-*/
-
--- DELETE FROM max_cluster_id;
-DELETE FROM max_value_by_entity;
-DELETE FROM min_addr_of_max_entity;
-DELETE FROM max_tx_to_max_entity;
+-- DELETE FROM max_value_by_entity;
+-- DELETE FROM min_addr_of_max_entity;
+-- DELETE FROM max_tx_to_max_entity;
 
 DO $$
 DECLARE max_cluster_id integer; 
 BEGIN
-  
+    -- Get id of cluster holding most unspent BTC
 	SELECT c.id INTO max_cluster_id
 	FROM outputs AS o, clusters AS c, utxos AS u
 	WHERE o.pk_id = c.address
@@ -78,6 +59,7 @@ BEGIN
 	LIMIT 1;
 	
 	INSERT INTO max_value_by_entity
+	-- Get maximum unspent BTC held by one single entity
 	SELECT SUM(o.value) AS unspent_total
     	FROM utxos AS u, outputs AS o
     	WHERE u.output_id = o.output_id AND o.pk_id IN
@@ -86,12 +68,13 @@ BEGIN
             WHERE id = max_cluster_id);
 
 	INSERT INTO min_addr_of_max_entity
+	-- Get lowest address belonging to the entity holding the most unspent BTC
 	SELECT MIN(c.address)
 	FROM clusters AS c
 	WHERE c.id = max_cluster_id;
-	
-	
+
 	INSERT INTO max_tx_to_max_entity
+	-- Get transaction sending the most BTC  to the entity holding the most unspent BTC
 	SELECT tx_id
 	FROM outputs AS o, clusters AS c
 	WHERE c.id = max_cluster_id
@@ -100,7 +83,6 @@ BEGIN
     ORDER BY SUM(o.value) DESC
 	LIMIT 1;
 
-  
 END $$;
 
 -- SELECT encode(sha256(((
