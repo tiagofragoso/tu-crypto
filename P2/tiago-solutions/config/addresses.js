@@ -18,6 +18,7 @@ const addresses = {
 module.exports = {
     NOTAWALLET_ADDR: addresses["notawallet_addr"],
     BADPARITY_ADDR: addresses["badparity_addr"],
+    BADPARITY_LIB_ADDR: addresses["badparity_lib"],
     DAODOWN_ADDR: addresses["daodown_addr"],
     FAILDICE_ADDR: addresses["faildice_addr"],
 };

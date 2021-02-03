@@ -34,7 +34,7 @@ class DaodownSolution extends Solution {
         console.log("Deployed exploit");
         try {
             console.log("Adding exploit as investor");
-            const challengeAbi = JSON.parse(fs.readFileSync("./challenges/daodown/publish/EDao.abi", "utf-8"));
+            const challengeAbi = JSON.parse(fs.readFileSync("./challenges/daodown/EDao.abi", "utf-8"));
             const challengeContract = new this.w3.eth.Contract(challengeAbi, this.challengeAddr);
             await challengeContract.methods.addInvestor(deployedExploit.options.address, false).send({ from: this.myAddr });
             console.log("Exploit added as investor");
