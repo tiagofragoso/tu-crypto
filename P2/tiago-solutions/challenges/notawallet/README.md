@@ -1,10 +1,9 @@
-# FailDice
+# Challenge NotAWallet
 
-## Setup
+This is a Wallet Contract and its source code that you have stumbled upon
+Can you spot what is wrong with it?
 
-** Contracts currently still just placeholders for final challenge ones **
+# Task
 
-## Solution
-
-
+Drain the contract of its funds and fill up your own account with them. 
 
