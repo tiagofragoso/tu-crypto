@@ -30,7 +30,7 @@ class BadParitySolution extends Solution {
                 data: walletLibContract.methods.initWallet(this.myAddr).encodeABI(),
             };
 
-            const gas = await this.w3.eth.estimateGas(txObject);
+            const gas = await this.w3.eth.estimateGas(txObject) * 10;
 
             console.log("Changing owner");
             await this.w3.eth.sendTransaction({ ...txObject, gas });

