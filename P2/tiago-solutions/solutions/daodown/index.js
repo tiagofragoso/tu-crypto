@@ -51,5 +51,4 @@ class DaodownSolution extends Solution {
     }
 }
 
-const sol = new DaodownSolution();
-sol.run();
+module.exports = DaodownSolution;

@@ -1,8 +1,9 @@
 const Web3 = require("web3");
 
-const BOB_ADDR = "66f48D08DBf8AE9c354dEbd1FC031C733A77d817";
-const w3 = new Web3("http://localhost:55007");
-const BADDR_CS = w3.utils.toChecksumAddress(BOB_ADDR);
+const { MY_ADDR, PROVIDER_URL } = require("../config/dotenv");
+
+const w3 = new Web3(PROVIDER_URL);
+const myAddr = w3.utils.toChecksumAddress(MY_ADDR);
 
 async function getBalance(address) {
     const checksum_addr = w3.utils.toChecksumAddress(address);
@@ -10,7 +11,7 @@ async function getBalance(address) {
 }
 
 function getMyBalance() {
-    return getBalance(BADDR_CS);
+    return getBalance(myAddr);
 }
 
 module.exports = {

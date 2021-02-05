@@ -3,7 +3,7 @@ const fs = require("fs");
 const Solution = require("../Solution");
 const { NOTAWALLET_ADDR } = require("../../config/addresses");
 
-class NotAWallet extends Solution {
+class NotAWalletSolution extends Solution {
     constructor() {
         super(NOTAWALLET_ADDR);
     }
@@ -31,5 +31,4 @@ class NotAWallet extends Solution {
     }
 }
 
-const sol = new NotAWallet();
-sol.run();
+module.exports = NotAWalletSolution;

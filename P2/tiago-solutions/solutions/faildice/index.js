@@ -4,7 +4,7 @@ const Solution = require("../Solution");
 const compile = require("../../utils/compile");
 const { FAILDICE_ADDR } = require("../../config/addresses");
 
-class FaildiceSolution extends Solution {
+class FailDiceSolution extends Solution {
     constructor() {
         super(FAILDICE_ADDR);
     }
@@ -16,10 +16,6 @@ class FaildiceSolution extends Solution {
 
     async run() {
         await this.unlock();
-        // await this.log();
-        // return;
-        // this.deployModified();
-        // return;
         console.log("Running faildice solution...");
         await this.printBalances();
         try {
@@ -67,5 +63,4 @@ class FaildiceSolution extends Solution {
     }
 }
 
-const sol = new FaildiceSolution();
-sol.run();
+module.exports = FailDiceSolution;

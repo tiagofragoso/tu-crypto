@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const Solution = require("../Solution");
-const { BADPARITY_ADDR, BADPARITY_LIB_ADDR } = require("../../config/addresses");
+const { BADPARITY_ADDR } = require("../../config/addresses");
 
 class BadParitySolution extends Solution {
     constructor() {
@@ -17,9 +17,11 @@ class BadParitySolution extends Solution {
 
             const challengeAbi = JSON.parse(fs.readFileSync("./challenges/badparity/Wallet.abi", "utf-8"));
             const challengeContract = new this.w3.eth.Contract(challengeAbi, this.challengeAddr);
+            const walletLibAddr = this.w3.utils.toChecksumAddress(
+                await challengeContract.methods.getWalletLibrary().call({ from: this.myAddr }),
+            );
 
             const walletLibAbi = JSON.parse(fs.readFileSync("./challenges/badparity/WalletLibrary.abi", "utf-8"));
-            const walletLibAddr = this.w3.utils.toChecksumAddress(BADPARITY_LIB_ADDR);
             const walletLibContract = new this.w3.eth.Contract(walletLibAbi, walletLibAddr);
 
             const txObject = {
@@ -44,5 +46,4 @@ class BadParitySolution extends Solution {
     }
 }
 
-const sol = new BadParitySolution();
-sol.run();
+module.exports = BadParitySolution;
